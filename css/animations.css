@@ -1,0 +1,129 @@
+/* ============================================================
+   CINESTAGE – Animations & Transitions
+   ============================================================ */
+
+/* Page enter animations */
+.page-enter { animation: page-slide-in 0.35s cubic-bezier(0.4,0,0.2,1) forwards; }
+.page-exit { animation: page-slide-out 0.25s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+@keyframes page-slide-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes page-slide-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-40px); }
+}
+
+/* Card hover ripple */
+.ripple-wrap { position: relative; overflow: hidden; }
+.ripple { position: absolute; border-radius: 50%; background: rgba(212,175,55,0.25); animation: ripple-expand 0.6s ease forwards; pointer-events: none; }
+@keyframes ripple-expand {
+  from { width: 0; height: 0; opacity: 1; }
+  to   { width: 300px; height: 300px; opacity: 0; }
+}
+
+/* Stagger animation for lists */
+.stagger-item { opacity: 0; transform: translateY(20px); animation: stagger-in 0.4s ease forwards; }
+@keyframes stagger-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bounce in for modals */
+.bounce-in { animation: bounce-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes bounce-in {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Pulse badge */
+.pulse-badge { animation: badge-pulse 2s infinite; }
+@keyframes badge-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(212,175,55,0); }
+}
+
+/* Shimmer on gold elements */
+.gold-shimmer {
+  background: linear-gradient(90deg, #D4AF37 0%, #f0cc5a 40%, #D4AF37 60%, #b8960c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 3s linear infinite;
+}
+@keyframes text-shimmer {
+  to { background-position: 200% center; }
+}
+
+/* Loading spinner */
+.spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Heart like animation */
+.heart-burst { animation: heart-burst 0.4s ease; }
+@keyframes heart-burst {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.4); }
+  50%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* Notification bell shake */
+.bell-shake { animation: bell-shake 0.5s ease; }
+@keyframes bell-shake {
+  0%,100% { transform: rotate(0); }
+  20%     { transform: rotate(15deg); }
+  40%     { transform: rotate(-12deg); }
+  60%     { transform: rotate(8deg); }
+  80%     { transform: rotate(-5deg); }
+}
+
+/* Card appear */
+.card-appear { animation: card-appear 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
+@keyframes card-appear {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Gradient background shift */
+.gradient-shift {
+  background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #0d0d1a, #1e1030);
+  background-size: 400% 400%;
+  animation: gradient-drift 8s ease infinite;
+}
+@keyframes gradient-drift {
+  0%,100% { background-position: 0% 50%; }
+  50%     { background-position: 100% 50%; }
+}
+
+/* Online indicator pulse */
+.online-pulse { animation: online-pulse 2s infinite; }
+@keyframes online-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.6); }
+  50%     { box-shadow: 0 0 0 5px rgba(76,175,80,0); }
+}
+
+/* Slide panel open */
+@keyframes panel-open {
+  from { max-height: 0; opacity: 0; }
+  to   { max-height: 600px; opacity: 1; }
+}
+
+/* Scroll appear (for lazy sections) */
+.scroll-appear { opacity: 0; transform: translateY(30px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.scroll-appear.visible { opacity: 1; transform: translateY(0); }
+
+/* Logo intro */
+.logo-intro { animation: logo-intro 1s cubic-bezier(0.4,0,0.2,1) forwards; }
+@keyframes logo-intro {
+  from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* Number count up */
+.count-up { animation: count-up 0.6s ease; }
+@keyframes count-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}

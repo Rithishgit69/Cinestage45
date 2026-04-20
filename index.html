@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CineStage – Film Industry Platform</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     SPLASH SCREEN
+════════════════════════════════════════════ -->
+<div id="splash-screen" class="screen active">
+  <div class="splash-bg gradient-shift">
+    <div class="film-strip top"></div>
+    <div class="film-strip bottom"></div>
+    <div class="splash-content">
+      <div class="logo-wrap logo-intro">
+        <div class="logo-icon"><i class="fas fa-film"></i></div>
+        <h1 class="logo-text">CineStage</h1>
+      </div>
+      <p class="tagline">Your Gateway to the Film Industry</p>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+    <div id="particles"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     ONBOARDING SLIDES
+════════════════════════════════════════════ -->
+<div id="onboarding-screen" class="screen">
+  <div class="onboarding-wrap">
+    <div class="slides-container" id="slides-container">
+      <div class="slide active">
+        <div class="slide-visual"><div class="slide-icon-bg"><i class="fas fa-theater-masks"></i></div>
+          <div class="floating-badge badge-1">🎭 Actor</div><div class="floating-badge badge-2">🎬 Director</div><div class="floating-badge badge-3">💃 Dancer</div>
+        </div>
+        <h2>Showcase Your Talent</h2>
+        <p>Create your professional film industry profile and get discovered by top producers and directors.</p>
+      </div>
+      <div class="slide">
+        <div class="slide-visual"><div class="slide-icon-bg"><i class="fas fa-video"></i></div>
+          <div class="floating-badge badge-1">🎵 Music</div><div class="floating-badge badge-2">✍️ Writer</div><div class="floating-badge badge-3">🎥 Crew</div>
+        </div>
+        <h2>Apply for Real Casting Calls</h2>
+        <p>Access live casting opportunities posted by real recruiters across Bollywood, OTT, regional cinema and more.</p>
+      </div>
+      <div class="slide">
+        <div class="slide-visual"><div class="slide-icon-bg"><i class="fas fa-award"></i></div>
+          <div class="floating-badge badge-1">🏆 Discover</div><div class="floating-badge badge-2">🌟 Fame</div><div class="floating-badge badge-3">📽️ Film</div>
+        </div>
+        <h2>Get Discovered by Professionals</h2>
+        <p>Top directors, producers and casting agents are waiting. Your big break is one profile away.</p>
+      </div>
+    </div>
+    <div class="slide-dots"><span class="dot active" data-dot="0"></span><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span></div>
+    <div class="onboarding-actions">
+      <button class="btn-skip" id="skip-btn">Skip</button>
+      <button class="btn-next" id="next-btn">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     AUTH SCREEN
+════════════════════════════════════════════ -->
+<div id="auth-screen" class="screen">
+  <div class="auth-wrap">
+    <div class="auth-logo"><div class="logo-icon sm"><i class="fas fa-film"></i></div><h2>CineStage</h2></div>
+    <p class="auth-tagline">India's Premier Film Industry Platform</p>
+    <div class="role-toggle">
+      <button class="role-btn active" data-role="artist">🎭 Artist / Crew</button>
+      <button class="role-btn" data-role="recruiter">🎬 Recruiter</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Login</button>
+      <button class="auth-tab" data-tab="register">Register</button>
+    </div>
+    <!-- LOGIN -->
+    <form id="login-form" class="auth-form active">
+      <div class="form-group"><label>Email or Phone</label>
+        <div class="input-wrap"><i class="fas fa-envelope"></i><input type="text" id="login-email" placeholder="Enter email or phone" autocomplete="username"/></div></div>
+      <div class="form-group"><label>Password</label>
+        <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password"/><button type="button" class="toggle-pw"><i class="fas fa-eye"></i></button></div></div>
+      <a href="#" class="forgot-link" id="forgot-link">Forgot Password?</a>
+      <button type="submit" class="btn-primary full">Login <i class="fas fa-sign-in-alt"></i></button>
+      <div class="divider"><span>or</span></div>
+      <button type="button" class="btn-social google" id="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+    </form>
+    <!-- REGISTER -->
+    <form id="register-form" class="auth-form">
+      <div class="form-group"><label>Full Name *</label>
+        <div class="input-wrap"><i class="fas fa-user"></i><input type="text" id="reg-name" placeholder="Your full name" autocomplete="name" required/></div></div>
+      <div class="form-group"><label>Email *</label>
+        <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" id="reg-email" placeholder="Email address" autocomplete="email" required/></div></div>
+      <div class="form-group"><label>Phone *</label>
+        <div class="input-wrap"><i class="fas fa-phone"></i><input type="tel" id="reg-phone" placeholder="Phone number" autocomplete="tel" required/></div></div>
+      <!-- Recruiter-only fields -->
+      <div id="recruiter-reg-fields" style="display:none;">
+        <div class="form-group"><label>Company / Production House *</label>
+          <div class="input-wrap"><i class="fas fa-building"></i><input type="text" id="reg-company" placeholder="e.g. Dharma Productions" autocomplete="organization"/></div></div>
+        <div class="form-group"><label>Designation</label>
+          <div class="input-wrap"><i class="fas fa-briefcase"></i><input type="text" id="reg-designation" placeholder="e.g. Casting Director, Producer" autocomplete="organization-title"/></div></div>
+      </div>
+      <div class="form-group"><label>Password *</label>
+        <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="reg-password" placeholder="Create password (min 6 chars)" autocomplete="new-password" required/></div></div>
+      <p class="form-note">After registration, you'll complete your detailed profile before accessing the app.</p>
+      <button type="submit" class="btn-primary full">Create Account <i class="fas fa-arrow-right"></i></button>
+    </form>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PROFILE SETUP WIZARD (Multi-step)
+════════════════════════════════════════════ -->
+<div id="setup-screen" class="screen">
+  <div class="setup-wrap">
+    <div class="setup-header">
+      <div class="setup-logo"><i class="fas fa-film"></i> CineStage</div>
+      <div class="setup-progress-wrap">
+        <div class="setup-progress-bar"><div class="setup-progress-fill" id="setup-progress-fill"></div></div>
+        <span id="setup-step-label">Step 1 of 6</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Role & Category -->
+    <div class="setup-step active" id="setup-step-1">
+      <div class="step-icon">🎬</div>
+      <h2>What's Your Role?</h2>
+      <p>Select your primary role in the film industry. You can add more later.</p>
+      <div class="category-grid" id="category-grid"></div>
+      <div class="step-actions"><button class="btn-primary" id="step1-next">Continue <i class="fas fa-arrow-right"></i></button></div>
+    </div>
+
+    <!-- Step 2: Personal Info -->
+    <div class="setup-step" id="setup-step-2">
+      <div class="step-icon">👤</div>
+      <h2 id="step2-title">Personal Details</h2>
+      <p id="step2-subtitle">This information helps recruiters find the right talent.</p>
+      <form id="personal-form" class="setup-form">
+        <div class="form-row-2">
+          <div class="form-group"><label>Age *</label><input type="number" id="s-age" min="5" max="80" placeholder="Your age" required/></div>
+          <div class="form-group"><label>Gender *</label>
+            <select id="s-gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+        </div>
+        <div class="form-group"><label>City / Location *</label><input type="text" id="s-location" placeholder="e.g. Mumbai, Maharashtra" required/></div>
+        <div class="form-group"><label>Languages You Speak *</label>
+          <div class="lang-checkboxes" id="lang-checkboxes"></div></div>
+        <div class="form-group artist-only-field"><label>Experience Level *</label>
+          <select id="s-experience"><option value="">Select experience</option><option>Fresher (No experience)</option><option>1-2 years</option><option>3-5 years</option><option>5-10 years</option><option>10+ years</option></select></div>
+        <!-- Recruiter-only -->
+        <div class="form-group recruiter-only-field" style="display:none;"><label>Company / Production House *</label><input type="text" id="s-company" placeholder="e.g. Dharma Productions"/></div>
+        <div class="form-group recruiter-only-field" style="display:none;"><label>Designation</label><input type="text" id="s-designation" placeholder="e.g. Casting Director, Producer"/></div>
+        <div class="step-actions"><button type="button" class="btn-outline" onclick="goSetupStep(1)"><i class="fas fa-arrow-left"></i> Back</button><button type="submit" class="btn-primary">Continue <i class="fas fa-arrow-right"></i></button></div>
+      </form>
+    </div>
+
+    <!-- Step 3: Physical Details -->
+    <div class="setup-step" id="setup-step-3">
+      <div class="step-icon">📏</div>
+      <h2 id="step3-title">Physical Details</h2>
+      <p id="step3-subtitle">Physical details help casting directors shortlist the right profile.</p>
+      <form id="physical-form" class="setup-form">
+        <div class="form-row-2">
+          <div class="form-group"><label>Height</label><input type="text" id="s-height" placeholder="e.g. 5'8\" or 172 cm"/></div>
+          <div class="form-group"><label>Weight</label><input type="text" id="s-weight" placeholder="e.g. 65 kg"/></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group"><label>Hair Color</label>
+            <select id="s-hair"><option value="">Select</option><option>Black</option><option>Brown</option><option>Dark Brown</option><option>Auburn</option><option>Blonde</option><option>Grey</option><option>White</option><option>Dyed/Colored</option></select></div>
+          <div class="form-group"><label>Eye Color</label>
+            <select id="s-eye"><option value="">Select</option><option>Black</option><option>Dark Brown</option><option>Brown</option><option>Hazel</option><option>Green</option><option>Blue</option><option>Grey</option></select></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group"><label>Complexion</label>
+            <select id="s-complexion"><option value="">Select</option><option>Fair</option><option>Wheatish Fair</option><option>Wheatish</option><option>Dusky</option><option>Dark</option><option>Very Dark</option></select></div>
+          <div class="form-group"><label>Body Type</label>
+            <select id="s-body"><option value="">Select</option><option>Slim/Lean</option><option>Athletic</option><option>Average</option><option>Plus Size</option><option>Muscular</option></select></div>
+        </div>
+        <div class="form-group"><label>Distinctive Features <span class="opt-label">(optional)</span></label><input type="text" id="s-features" placeholder="e.g. scar, tattoo, birthmark, dimples"/></div>
+        <div class="step-actions"><button type="button" class="btn-outline" onclick="goSetupStep(2)"><i class="fas fa-arrow-left"></i> Back</button><button type="submit" class="btn-primary">Continue <i class="fas fa-arrow-right"></i></button></div>
+        <a class="setup-skip-link" onclick="goSetupStep(4)">Skip for now →</a>
+      </form>
+    </div>
+
+    <!-- Step 4: Skills & Bio -->
+    <div class="setup-step" id="setup-step-4">
+      <div class="step-icon">⭐</div>
+      <h2>Your Skills & Bio</h2>
+      <p>Tell the industry what makes you unique.</p>
+      <form id="skills-form" class="setup-form">
+        <div class="form-group"><label>Key Skills *</label>
+          <div class="skills-checkboxes" id="skills-checkboxes"></div></div>
+        <div class="form-group"><label>Bio / About You *</label>
+          <textarea id="s-bio" rows="5" placeholder="Write a compelling bio about your experience, training, achievements, and what you bring to a project... (minimum 50 characters)" required></textarea>
+          <span class="char-count" id="bio-char">0 / 500</span></div>
+        <div class="form-group"><label>Portfolio / Reel Link <span class="opt-label">(optional)</span></label>
+          <div class="input-wrap"><i class="fas fa-link"></i><input type="url" id="s-portfolio" placeholder="https://youtube.com/your-reel or Drive link"/></div></div>
+        <div class="step-actions"><button type="button" class="btn-outline" onclick="goSetupStep(3)"><i class="fas fa-arrow-left"></i> Back</button><button type="submit" class="btn-primary">Continue <i class="fas fa-arrow-right"></i></button></div>
+      </form>
+    </div>
+
+    <!-- Step 5: Profile Photo -->
+    <div class="setup-step" id="setup-step-5">
+      <div class="step-icon">📸</div>
+      <h2>Profile Photo</h2>
+      <p>A clear headshot increases your chances of getting shortlisted by 3x.</p>
+      <div class="photo-upload-area">
+        <div class="photo-preview-circle" id="photo-preview-circle">
+          <img id="photo-preview-img" src="" alt="" style="display:none;"/>
+          <div class="photo-placeholder" id="photo-placeholder"><i class="fas fa-user"></i></div>
+        </div>
+        <button type="button" class="btn-outline" id="photo-upload-btn"><i class="fas fa-camera"></i> Upload Photo</button>
+        <input type="file" id="photo-file-input" accept="image/*" hidden/>
+        <p class="photo-hint">JPG, PNG — max 5MB. Clear face, good lighting.</p>
+        <div class="photo-no-photo">
+          <button type="button" class="btn-text" id="skip-photo-btn">Skip for now (add later)</button>
+        </div>
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn-outline" onclick="goSetupStep(4)"><i class="fas fa-arrow-left"></i> Back</button>
+        <button type="button" class="btn-primary" id="step5-next">Continue <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Step 6: Choose Membership -->
+    <div class="setup-step" id="setup-step-6">
+      <div class="step-icon">👑</div>
+      <h2>Choose Your Plan</h2>
+      <p>Select a membership plan to unlock full access. Start free or go premium.</p>
+      <div class="plan-tabs" id="setup-plan-tabs">
+        <button class="plan-tab active" data-duration="monthly">Monthly</button>
+        <button class="plan-tab" data-duration="weekly">Weekly</button>
+        <button class="plan-tab" data-duration="quarterly">Quarterly</button>
+        <button class="plan-tab" data-duration="half-yearly">Half-Yearly</button>
+        <button class="plan-tab" data-duration="yearly">Yearly</button>
+      </div>
+      <div class="setup-plans-grid" id="setup-plans-grid"></div>
+      <div class="step-actions"><button type="button" class="btn-outline" onclick="goSetupStep(5)"><i class="fas fa-arrow-left"></i> Back</button></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAYMENT SCREEN
+════════════════════════════════════════════ -->
+<div id="payment-screen" class="screen">
+  <div class="payment-wrap">
+    <div class="payment-header">
+      <button class="back-btn" id="payment-back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+      <h2>Complete Payment</h2>
+    </div>
+    <div class="payment-summary" id="payment-summary"></div>
+    <div class="payment-methods">
+      <h4>Select Payment Method</h4>
+      <div class="pay-method active" data-method="upi"><i class="fas fa-mobile-alt"></i> UPI / PhonePe / GPay</div>
+      <div class="pay-method" data-method="card"><i class="fas fa-credit-card"></i> Credit / Debit Card</div>
+      <div class="pay-method" data-method="netbanking"><i class="fas fa-university"></i> Net Banking</div>
+    </div>
+    <!-- UPI Form -->
+    <div class="pay-form active" id="pay-upi">
+      <div class="form-group"><label>UPI ID</label><input type="text" id="upi-id" placeholder="yourname@upi" autocomplete="off"/></div>
+    </div>
+    <!-- Card Form -->
+    <div class="pay-form" id="pay-card">
+      <div class="form-group"><label>Card Number</label><input type="text" id="card-num" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number"/></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Expiry</label><input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp"/></div>
+        <div class="form-group"><label>CVV</label><input type="text" id="card-cvv" placeholder="CVV" maxlength="4" autocomplete="cc-csc"/></div>
+      </div>
+      <div class="form-group"><label>Cardholder Name</label><input type="text" id="card-name" placeholder="Name on card" autocomplete="cc-name"/></div>
+    </div>
+    <!-- Net Banking -->
+    <div class="pay-form" id="pay-netbanking">
+      <div class="form-group"><label>Select Bank</label>
+        <select id="bank-select"><option value="">Choose Bank</option><option>SBI</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra</option><option>Yes Bank</option><option>PNB</option><option>BOB</option><option>Canara Bank</option><option>Union Bank</option></select></div>
+    </div>
+    <div class="payment-secure-note"><i class="fas fa-lock"></i> 256-bit SSL Secured Payment</div>
+    <button class="btn-primary full" id="pay-now-btn">Pay Now <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MAIN APP
+════════════════════════════════════════════ -->
+<div id="app" class="screen">
+
+  <!-- Top Bar -->
+  <header class="top-bar" id="top-bar">
+    <div class="top-bar-left">
+      <button class="menu-btn" id="menu-btn"><i class="fas fa-bars"></i></button>
+      <div class="app-logo"><i class="fas fa-film"></i> <span>CineStage</span></div>
+    </div>
+    <div class="top-bar-right">
+      <button class="icon-btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="badge hidden" id="notif-badge">0</span></button>
+      <div class="avatar-btn" id="profile-avatar-btn">
+        <img src="" alt="profile" class="avatar-img" id="top-avatar"/>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pages -->
+  <main class="page-container">
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <div class="page-scroll">
+        <div class="greeting-bar">
+          <div><p class="greeting-sub" id="greeting-time">Good Morning 🎬</p><h3 class="greeting-name" id="greeting-name">Welcome</h3></div>
+          <div class="membership-chip" id="membership-chip" onclick="navigateTo('membership')"></div>
+        </div>
+        <div class="search-bar-home" id="home-search-bar">
+          <i class="fas fa-search"></i><input type="text" placeholder="Search artists, roles, locations..." readonly/>
+        </div>
+
+        <!-- Categories Quick Access -->
+        <div class="section-header"><h4>🎬 Browse by Category</h4></div>
+        <div class="h-scroll" id="home-categories"></div>
+
+        <!-- Casting Calls -->
+        <div class="section-header"><h4>🔥 Live Casting Calls</h4><button class="see-all" onclick="navigateTo('search')">See All</button></div>
+        <div id="home-castings" class="home-castings-wrap"></div>
+
+        <!-- Artists Near You -->
+        <div class="section-header"><h4>🎭 Artists in Your City</h4><button class="see-all" onclick="navigateTo('search')">See All</button></div>
+        <div class="h-scroll" id="home-artists"></div>
+
+        <!-- Nearby Theaters -->
+        <div class="section-header"><h4>🎥 Nearby Theaters & Studios</h4><button class="see-all" onclick="navigateTo('theaters')">See All</button></div>
+        <div id="home-theaters"></div>
+
+        <!-- App Overview Stats -->
+        <div class="section-header"><h4>📊 Platform Overview</h4></div>
+        <div class="overview-stats" id="overview-stats"></div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="page" id="page-search">
+      <div class="page-scroll">
+        <div class="search-header">
+          <div class="search-input-wrap"><i class="fas fa-search"></i><input type="text" id="search-input" placeholder="Name, skill, location..."/><button id="clear-search"><i class="fas fa-times"></i></button></div>
+          <button class="filter-btn" id="filter-toggle-btn"><i class="fas fa-sliders-h"></i></button>
+        </div>
+        <div class="filters-panel" id="filters-panel">
+          <div class="form-row-2">
+            <div class="filter-group"><label>Category</label><select id="f-category"><option value="">All</option></select></div>
+            <div class="filter-group"><label>Gender</label><select id="f-gender"><option value="">Any</option><option>Male</option><option>Female</option><option>Non-binary</option></select></div>
+          </div>
+          <div class="form-row-2">
+            <div class="filter-group"><label>Experience</label><select id="f-exp"><option value="">Any</option><option>Fresher (No experience)</option><option>1-2 years</option><option>3-5 years</option><option>5-10 years</option><option>10+ years</option></select></div>
+            <div class="filter-group"><label>Location</label><input type="text" id="f-location" placeholder="City..."/></div>
+          </div>
+          <button class="btn-primary full" id="apply-filters">Apply Filters</button>
+        </div>
+        <div class="search-tabs">
+          <button class="s-tab active" data-stab="artists">Artists & Crew</button>
+          <button class="s-tab" data-stab="castings">Casting Calls</button>
+        </div>
+        <div class="results-area" id="search-results"></div>
+      </div>
+    </section>
+
+    <!-- UPLOAD / POST -->
+    <section class="page" id="page-upload">
+      <div class="page-scroll">
+        <h3 class="page-title" id="upload-page-title">Submit Audition</h3>
+        <!-- Artist: Submit Audition -->
+        <div id="artist-upload-section">
+          <form id="audition-form" class="upload-form">
+            <div class="upload-zone" id="upload-zone"><i class="fas fa-cloud-upload-alt"></i><p>Tap to upload audition video</p><span>MP4, MOV up to 500MB</span><input type="file" id="video-upload" accept="video/*" hidden/></div>
+            <div class="upload-preview" id="upload-preview" style="display:none;"><div class="preview-card"><i class="fas fa-check-circle success-icon"></i><span id="preview-filename"></span><button type="button" id="remove-video"><i class="fas fa-times"></i></button></div></div>
+            <div class="form-group"><label>Select Casting Call *</label><select id="casting-select" class="form-select" required><option value="">Select a casting call...</option></select></div>
+            <div class="form-group"><label>Role You're Auditioning For *</label><input type="text" id="role-desc" placeholder="Describe the specific role" required/></div>
+            <div class="form-group"><label>Cover Note *</label><textarea id="cover-note" placeholder="Why are you perfect for this role? Include relevant experience..." rows="5" required></textarea></div>
+            <div class="form-group"><label>Portfolio / Reel Link</label><div class="input-wrap"><i class="fas fa-link"></i><input type="url" id="aud-portfolio" placeholder="https://your-portfolio.com"/></div></div>
+            <button type="submit" class="btn-primary full">Submit Audition <i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+        <!-- Recruiter: Post Casting Call -->
+        <div id="recruiter-post-section" style="display:none;">
+          <form id="post-casting-form" class="upload-form">
+            <div class="form-group"><label>Role Title *</label><input type="text" id="pc-title" placeholder="e.g. Lead Actor – Romantic Drama" required/></div>
+            <div class="form-group"><label>Production Company *</label><input type="text" id="pc-company" placeholder="e.g. Dharma Productions" required/></div>
+            <div class="form-group"><label>Category / Role Type *</label><select id="pc-category" required><option value="">Select category</option></select></div>
+            <div class="form-group"><label>Description *</label><textarea id="pc-desc" placeholder="Describe the role, project, shooting schedule..." rows="5" required></textarea></div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Min Age</label><input type="number" id="pc-age-min" min="5" max="80" placeholder="18"/></div>
+              <div class="form-group"><label>Max Age</label><input type="number" id="pc-age-max" min="5" max="80" placeholder="35"/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Gender</label><select id="pc-gender"><option value="Any">Any</option><option>Male</option><option>Female</option><option>Non-binary</option></select></div>
+              <div class="form-group"><label>Location</label><input type="text" id="pc-location" placeholder="Shooting location" required/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>Budget / Remuneration</label><input type="text" id="pc-budget" placeholder="e.g. ₹50,000 or Negotiable"/></div>
+              <div class="form-group"><label>Deadline *</label><input type="date" id="pc-deadline" required/></div>
+            </div>
+            <div class="form-group"><label>Requirements (one per line)</label><textarea id="pc-requirements" placeholder="Must have acting experience&#10;Age 25-35&#10;Hindi fluency required" rows="4"></textarea></div>
+            <button type="submit" class="btn-primary full">Post Casting Call <i class="fas fa-bullhorn"></i></button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="page" id="page-messages">
+      <div class="messages-layout">
+        <div class="chat-list" id="chat-list">
+          <div class="chat-list-header"><h4>Messages</h4></div>
+          <div id="chat-list-items"></div>
+        </div>
+        <div class="chat-window" id="chat-window">
+          <div class="chat-empty" id="chat-empty"><i class="fas fa-comments"></i><p>Select a conversation</p></div>
+          <div class="chat-active" id="chat-active" style="display:none;">
+            <div class="chat-header">
+              <button class="back-chat-btn" id="back-chat-btn"><i class="fas fa-arrow-left"></i></button>
+              <img class="chat-avatar" id="chat-avatar" src="" alt=""/>
+              <div class="chat-info"><span class="chat-name" id="chat-name"></span><span class="chat-status" id="chat-status-text">Online</span></div>
+              <div class="chat-actions">
+                <button class="icon-btn" id="call-btn"><i class="fas fa-phone"></i></button>
+                <button class="icon-btn" id="video-btn"><i class="fas fa-video"></i></button>
+              </div>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-bar">
+              <input type="text" id="message-input" placeholder="Type a message..."/>
+              <button class="send-btn" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="page" id="page-profile">
+      <div class="page-scroll" id="profile-content"></div>
+    </section>
+
+    <!-- NOTIFICATIONS -->
+    <section class="page" id="page-notifications">
+      <div class="page-scroll">
+        <div class="page-title-bar"><h3>Notifications</h3><button class="btn-text" id="mark-all-read">Mark all read</button></div>
+        <div id="notif-list"></div>
+      </div>
+    </section>
+
+    <!-- CASTING DETAIL -->
+    <section class="page" id="page-casting-detail">
+      <div class="page-scroll">
+        <button class="back-btn" id="casting-back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+        <div id="casting-detail-content"></div>
+      </div>
+    </section>
+
+    <!-- ARTIST DETAIL -->
+    <section class="page" id="page-artist-detail">
+      <div class="page-scroll">
+        <button class="back-btn" id="artist-back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+        <div id="artist-detail-content"></div>
+      </div>
+    </section>
+
+    <!-- THEATERS -->
+    <section class="page" id="page-theaters">
+      <div class="page-scroll">
+        <div class="page-title-bar"><h3>🎥 Theaters & Studios</h3><button class="btn-primary sm" id="add-theater-btn"><i class="fas fa-plus"></i> Add</button></div>
+        <div class="search-input-wrap" style="margin-bottom:1rem;"><i class="fas fa-search"></i><input type="text" id="theater-search" placeholder="Search by name or city..."/></div>
+        <div class="theater-type-chips" id="theater-type-chips"></div>
+        <div id="theaters-list"></div>
+      </div>
+    </section>
+
+    <!-- MEMBERSHIP -->
+    <section class="page" id="page-membership">
+      <div class="page-scroll">
+        <h3 class="page-title">👑 Membership Plans</h3>
+        <p class="page-subtitle">Unlock premium features. Choose the plan that fits your career goals.</p>
+        <div class="membership-features-banner">
+          <div class="mf-item"><i class="fas fa-check"></i> Unlimited Applications</div>
+          <div class="mf-item"><i class="fas fa-check"></i> Priority in Search</div>
+          <div class="mf-item"><i class="fas fa-check"></i> Direct Messaging</div>
+          <div class="mf-item"><i class="fas fa-check"></i> Verified Badge</div>
+          <div class="mf-item"><i class="fas fa-check"></i> Analytics Dashboard</div>
+          <div class="mf-item"><i class="fas fa-check"></i> Portfolio Showcase</div>
+        </div>
+        <div class="plan-tabs" id="main-plan-tabs">
+          <button class="plan-tab active" data-duration="monthly">Monthly</button>
+          <button class="plan-tab" data-duration="weekly">Weekly</button>
+          <button class="plan-tab" data-duration="quarterly">Quarterly</button>
+          <button class="plan-tab" data-duration="half-yearly">Half-Yearly</button>
+          <button class="plan-tab" data-duration="yearly">Yearly</button>
+        </div>
+        <div class="plans-grid" id="main-plans-grid"></div>
+        <div class="current-plan-info" id="current-plan-info"></div>
+      </div>
+    </section>
+
+    <!-- RECRUITER DASHBOARD -->
+    <section class="page" id="page-recruiter">
+      <div class="page-scroll">
+        <h3 class="page-title">Recruiter Dashboard</h3>
+        <div class="recruiter-stats-grid" id="recruiter-stats"></div>
+        <div class="section-header"><h4>My Casting Calls</h4><button class="btn-primary sm" onclick="navigateTo('upload')"><i class="fas fa-plus"></i> Post New</button></div>
+        <div id="recruiter-castings"></div>
+        <div class="section-header" style="margin-top:1.5rem;"><h4>Recent Applicants</h4></div>
+        <div id="recruiter-applicants"></div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="page" id="page-analytics">
+      <div class="page-scroll">
+        <h3 class="page-title">📊 App Analytics & Scale</h3>
+        <div id="analytics-content"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-btn active" data-page="home"><i class="fas fa-home"></i><span>Home</span></button>
+    <button class="nav-btn" data-page="search"><i class="fas fa-search"></i><span>Search</span></button>
+    <button class="nav-btn upload-nav" data-page="upload"><div class="upload-circle"><i class="fas fa-plus"></i></div><span>Post</span></button>
+    <button class="nav-btn" data-page="messages"><i class="fas fa-comment-dots"></i><span class="msg-badge-dot hidden" id="msg-badge-dot"></span><span>Chat</span></button>
+    <button class="nav-btn" data-page="profile"><i class="fas fa-user"></i><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- Side Menu -->
+<div class="side-menu-overlay" id="side-menu-overlay"></div>
+<div class="side-menu" id="side-menu">
+  <div class="side-menu-logo"><div class="logo-icon sm"><i class="fas fa-film"></i></div><span>CineStage</span></div>
+  <div class="side-user-info" id="side-user-info"></div>
+  <div class="menu-divider"></div>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('home')"><i class="fas fa-home"></i> Home</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('profile')"><i class="fas fa-user"></i> My Profile</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('search')"><i class="fas fa-search"></i> Find Talent / Castings</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('theaters')"><i class="fas fa-film"></i> Theaters & Studios</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('membership')"><i class="fas fa-crown"></i> Membership Plans</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('analytics')"><i class="fas fa-chart-bar"></i> App Overview</a>
+  <a class="menu-item" onclick="closeSideMenu();navigateTo('recruiter')"><i class="fas fa-users"></i> Recruiter Dashboard</a>
+  <div class="menu-divider"></div>
+  <a class="menu-item" onclick="closeSideMenu();document.getElementById('theme-toggle').click()"><i class="fas fa-adjust"></i> Toggle Theme</a>
+  <div class="menu-divider"></div>
+  <a class="menu-item admin-link" href="admin/index.html" target="_blank" rel="noopener">
+    <i class="fas fa-shield-alt"></i> Admin Panel
+    <span class="admin-link-badge">Admin</span>
+  </a>
+  <a class="menu-item danger" onclick="closeSideMenu();handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<!-- ── ADMIN PANEL FLOATING SHORTCUT ── -->
+<a href="admin/index.html" target="_blank" rel="noopener" id="admin-fab" class="admin-fab" title="Open Admin Panel">
+  <i class="fas fa-shield-alt"></i>
+  <span class="admin-fab-label">Admin</span>
+</a>
+
+<!-- ── MODALS ── -->
+<!-- Apply Modal -->
+<div class="modal-overlay" id="apply-modal">
+  <div class="modal-card glass">
+    <button class="modal-close" data-modal="apply-modal"><i class="fas fa-times"></i></button>
+    <h3 id="apply-modal-title">Apply for Role</h3>
+    <form id="quick-apply-form">
+      <div class="form-group"><label>Cover Message *</label><textarea id="quick-cover" placeholder="Why are you the perfect fit? Mention your relevant experience..." rows="5" required></textarea></div>
+      <div class="form-group"><label>Experience Summary</label><input type="text" id="quick-exp" placeholder="e.g. 3 years in Bollywood films, trained in Kathak"/></div>
+      <div class="form-group"><label>Portfolio / Reel Link</label><div class="input-wrap"><i class="fas fa-link"></i><input type="url" id="quick-portfolio" placeholder="https://your-reel-link"/></div></div>
+      <button type="submit" class="btn-primary full">Submit Application <i class="fas fa-paper-plane"></i></button>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="edit-profile-modal">
+  <div class="modal-card glass">
+    <button class="modal-close" data-modal="edit-profile-modal"><i class="fas fa-times"></i></button>
+    <h3>Edit Profile</h3>
+    <form id="edit-profile-form">
+      <div class="form-group"><label>Full Name</label><input type="text" id="ep-name" autocomplete="name"/></div>
+      <div class="form-group"><label>Bio</label><textarea id="ep-bio" rows="4"></textarea></div>
+      <div class="form-group"><label>Location</label><input type="text" id="ep-location"/></div>
+      <div class="form-group"><label>Portfolio Link</label><div class="input-wrap"><i class="fas fa-link"></i><input type="url" id="ep-portfolio"/></div></div>
+      <button type="submit" class="btn-primary full">Save Changes <i class="fas fa-save"></i></button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Theater Modal -->
+<div class="modal-overlay" id="add-theater-modal">
+  <div class="modal-card glass">
+    <button class="modal-close" data-modal="add-theater-modal"><i class="fas fa-times"></i></button>
+    <h3>Add Theater / Studio</h3>
+    <form id="add-theater-form">
+      <div class="form-group"><label>Name *</label><input type="text" id="th-name" placeholder="e.g. PVR Cinemas" required/></div>
+      <div class="form-group"><label>Type *</label><select id="th-type" required><option value="">Select type</option><option>Cinema Hall</option><option>Multiplex</option><option>Studio</option><option>Auditorium</option><option>Open Air Theatre</option><option>Drive-in</option><option>Preview Theatre</option></select></div>
+      <div class="form-group"><label>Address *</label><input type="text" id="th-address" placeholder="Street address" required/></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>City *</label><input type="text" id="th-city" placeholder="City" required/></div>
+        <div class="form-group"><label>State</label><input type="text" id="th-state" placeholder="State"/></div>
+      </div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="th-phone" placeholder="Contact number" autocomplete="off"/></div>
+      <button type="submit" class="btn-primary full">Add Theater <i class="fas fa-map-marker-alt"></i></button>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Scripts -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/membership.js"></script>
+<script src="js/theaters.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>

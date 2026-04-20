@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CineStage Admin Panel</title>
+  <link rel="stylesheet" href="css/admin.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══════════════════════════════════ -->
+<div id="admin-login" class="login-screen active">
+  <div class="login-bg">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-icon"><i class="fas fa-film"></i></div>
+        <div>
+          <h1>CineStage</h1>
+          <span class="admin-label">Admin Panel</span>
+        </div>
+      </div>
+      <p class="login-sub">Restricted access — Administrators only</p>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label><i class="fas fa-user-shield"></i> Admin Username</label>
+          <input type="text" id="admin-user" placeholder="Enter admin username" autocomplete="username" required/>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="admin-pass" placeholder="Enter admin password" autocomplete="current-password" required/>
+            <button type="button" class="toggle-pw-btn" id="toggle-admin-pw"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="login-error" id="login-error"></div>
+        <button type="submit" class="btn-login">
+          <i class="fas fa-sign-in-alt"></i> Login to Admin Panel
+        </button>
+      </form>
+      <div class="login-hint">
+        <i class="fas fa-info-circle"></i>
+        Default: <strong>admin</strong> / <strong>cinestage@admin123</strong>
+      </div>
+      <a href="../index.html" class="back-to-app"><i class="fas fa-arrow-left"></i> Back to CineStage App</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN APP SHELL ══════════════════════════════ -->
+<div id="admin-app" class="admin-shell" style="display:none;">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon-sm"><i class="fas fa-film"></i></div>
+      <div>
+        <div class="sidebar-title">CineStage</div>
+        <div class="sidebar-sub">Admin Panel</div>
+      </div>
+    </div>
+    <div class="sidebar-admin-info" id="sidebar-admin-info">
+      <div class="admin-avatar"><i class="fas fa-user-shield"></i></div>
+      <div class="admin-name-wrap">
+        <div class="admin-name" id="admin-display-name">Admin</div>
+        <div class="admin-role-tag">Super Admin</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a class="nav-item" data-section="users"><i class="fas fa-users"></i> Users <span class="nav-badge" id="nb-users">0</span></a>
+      <a class="nav-item" data-section="castings"><i class="fas fa-film"></i> Casting Calls <span class="nav-badge" id="nb-castings">0</span></a>
+      <a class="nav-item" data-section="applications"><i class="fas fa-paper-plane"></i> Applications <span class="nav-badge" id="nb-apps">0</span></a>
+      <a class="nav-item" data-section="messages"><i class="fas fa-comment-dots"></i> Messages</a>
+      <a class="nav-item" data-section="theaters"><i class="fas fa-map-marker-alt"></i> Theaters</a>
+      <a class="nav-item" data-section="memberships"><i class="fas fa-crown"></i> Memberships</a>
+      <a class="nav-item" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a>
+      <a class="nav-item" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="../index.html" class="sidebar-link" target="_blank"><i class="fas fa-external-link-alt"></i> View Live App</a>
+      <button class="btn-admin-logout" id="admin-logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="admin-main" id="admin-main">
+
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+      <div class="topbar-left">
+        <h2 class="section-title" id="section-title">Dashboard</h2>
+        <span class="last-refresh" id="last-refresh"></span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-refresh" id="refresh-btn" title="Refresh data"><i class="fas fa-sync-alt"></i></button>
+        <div class="theme-toggle-wrap">
+          <button class="btn-theme" id="admin-theme-btn" title="Toggle theme"><i class="fas fa-moon"></i></button>
+        </div>
+        <div class="topbar-admin-name"><i class="fas fa-user-shield"></i> <span id="topbar-admin-name">Admin</span></div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD ── -->
+    <section class="admin-section active" id="section-dashboard">
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="dashboard-row">
+        <div class="dash-card">
+          <div class="dash-card-header"><h4><i class="fas fa-users"></i> Recent Users</h4><button class="btn-see-all" onclick="switchSection('users')">View All</button></div>
+          <div id="recent-users-table"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h4><i class="fas fa-film"></i> Recent Casting Calls</h4><button class="btn-see-all" onclick="switchSection('castings')">View All</button></div>
+          <div id="recent-castings-table"></div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dash-card">
+          <div class="dash-card-header"><h4><i class="fas fa-chart-pie"></i> Category Breakdown</h4></div>
+          <div id="category-chart"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h4><i class="fas fa-crown"></i> Membership Revenue</h4></div>
+          <div id="revenue-chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── USERS ── -->
+    <section class="admin-section" id="section-users">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="user-search" placeholder="Search by name, email, location..."/></div>
+        <div class="filter-row">
+          <select id="user-role-filter"><option value="">All Roles</option><option value="artist">Artist</option><option value="recruiter">Recruiter</option></select>
+          <select id="user-plan-filter"><option value="">All Plans</option><option value="free">Free</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="half-yearly">Half-Yearly</option><option value="yearly">Yearly</option></select>
+        </div>
+        <button class="btn-export" id="export-users-btn"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+      <div class="table-wrap" id="users-table-wrap">
+        <table class="admin-table" id="users-table">
+          <thead><tr><th>Avatar</th><th>Name</th><th>Email</th><th>Role</th><th>Category</th><th>Location</th><th>Plan</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="users-pagination"></div>
+    </section>
+
+    <!-- ── CASTING CALLS ── -->
+    <section class="admin-section" id="section-castings">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="casting-search" placeholder="Search by title, company, location..."/></div>
+        <div class="filter-row">
+          <select id="casting-status-filter"><option value="">All Status</option><option value="active">Active</option><option value="closed">Closed</option></select>
+        </div>
+        <button class="btn-export" id="export-castings-btn"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Title</th><th>Company</th><th>Category</th><th>Location</th><th>Deadline</th><th>Applicants</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="castings-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="castings-pagination"></div>
+    </section>
+
+    <!-- ── APPLICATIONS ── -->
+    <section class="admin-section" id="section-applications">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="app-search" placeholder="Search by applicant or casting..."/></div>
+        <div class="filter-row">
+          <select id="app-status-filter"><option value="">All Status</option><option value="applied">Applied</option><option value="shortlisted">Shortlisted</option><option value="rejected">Rejected</option><option value="hired">Hired</option></select>
+        </div>
+        <button class="btn-export" id="export-apps-btn"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Applicant</th><th>Casting Call</th><th>Category</th><th>Status</th><th>Applied On</th><th>Actions</th></tr></thead>
+          <tbody id="apps-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="apps-pagination"></div>
+    </section>
+
+    <!-- ── MESSAGES ── -->
+    <section class="admin-section" id="section-messages">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="msg-search" placeholder="Search messages..."/></div>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>From</th><th>To</th><th>Message</th><th>Conversation</th><th>Sent On</th><th>Read</th><th>Actions</th></tr></thead>
+          <tbody id="msgs-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="msgs-pagination"></div>
+    </section>
+
+    <!-- ── THEATERS ── -->
+    <section class="admin-section" id="section-theaters">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="theater-search" placeholder="Search by name or city..."/></div>
+        <div class="filter-row">
+          <select id="theater-type-filter"><option value="">All Types</option><option>Cinema Hall</option><option>Multiplex</option><option>Studio</option><option>Auditorium</option><option>Open Air Theatre</option><option>Drive-in</option><option>Preview Theatre</option></select>
+        </div>
+        <button class="btn-add-theater btn-admin-action" id="add-theater-admin-btn"><i class="fas fa-plus"></i> Add Theater</button>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Address</th><th>City</th><th>Phone</th><th>Verified</th><th>Added On</th><th>Actions</th></tr></thead>
+          <tbody id="theaters-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="theaters-pagination"></div>
+    </section>
+
+    <!-- ── MEMBERSHIPS ── -->
+    <section class="admin-section" id="section-memberships">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="membership-search" placeholder="Search by user name..."/></div>
+        <div class="filter-row">
+          <select id="membership-plan-filter"><option value="">All Plans</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="half-yearly">Half-Yearly</option><option value="yearly">Yearly</option></select>
+          <select id="membership-status-filter"><option value="">All Status</option><option value="active">Active</option><option value="expired">Expired</option></select>
+        </div>
+        <button class="btn-export" id="export-memberships-btn"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+      <!-- Revenue Summary -->
+      <div class="revenue-summary" id="revenue-summary"></div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>User</th><th>Plan</th><th>Tier</th><th>Amount</th><th>Start Date</th><th>Expiry</th><th>Transaction ID</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="memberships-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="memberships-pagination"></div>
+    </section>
+
+    <!-- ── NOTIFICATIONS ── -->
+    <section class="admin-section" id="section-notifications">
+      <div class="section-toolbar">
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="notif-search-admin" placeholder="Search notifications..."/></div>
+        <button class="btn-admin-action" id="send-notif-btn"><i class="fas fa-paper-plane"></i> Send Broadcast</button>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>User ID</th><th>Type</th><th>Title</th><th>Description</th><th>Read</th><th>Created</th><th>Actions</th></tr></thead>
+          <tbody id="notifs-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="notifs-pagination"></div>
+    </section>
+
+    <!-- ── ANALYTICS ── -->
+    <section class="admin-section" id="section-analytics">
+      <div class="analytics-grid" id="analytics-grid"></div>
+      <div class="analytics-charts-row">
+        <div class="chart-card">
+          <h4><i class="fas fa-chart-bar"></i> Users by Category</h4>
+          <div id="admin-category-chart" class="bar-chart-area"></div>
+        </div>
+        <div class="chart-card">
+          <h4><i class="fas fa-chart-line"></i> Application Status</h4>
+          <div id="admin-app-status-chart" class="bar-chart-area"></div>
+        </div>
+      </div>
+      <div class="analytics-charts-row">
+        <div class="chart-card">
+          <h4><i class="fas fa-crown"></i> Revenue by Plan</h4>
+          <div id="admin-revenue-chart" class="bar-chart-area"></div>
+        </div>
+        <div class="chart-card">
+          <h4><i class="fas fa-map-marker-alt"></i> Top Locations</h4>
+          <div id="admin-location-chart" class="bar-chart-area"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══ MODALS ══════════════════════════════════════ -->
+
+<!-- View User Modal -->
+<div class="modal-overlay" id="view-user-modal">
+  <div class="modal-box wide">
+    <div class="modal-header"><h3 id="view-user-title">User Profile</h3><button class="modal-close-btn" data-modal="view-user-modal"><i class="fas fa-times"></i></button></div>
+    <div id="view-user-content"></div>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal-overlay" id="edit-user-modal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Edit User</h3><button class="modal-close-btn" data-modal="edit-user-modal"><i class="fas fa-times"></i></button></div>
+    <form id="edit-user-form">
+      <input type="hidden" id="eu-id"/>
+      <div class="form-row-2">
+        <div class="form-group"><label>Full Name</label><input type="text" id="eu-name" required/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="eu-email" required/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Phone</label><input type="tel" id="eu-phone"/></div>
+        <div class="form-group"><label>Location</label><input type="text" id="eu-location"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Role</label>
+          <select id="eu-role"><option value="artist">Artist</option><option value="recruiter">Recruiter</option></select></div>
+        <div class="form-group"><label>Membership Plan</label>
+          <select id="eu-plan"><option value="free">Free</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="half-yearly">Half-Yearly</option><option value="yearly">Yearly</option></select></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Verified</label>
+          <select id="eu-verified"><option value="false">No</option><option value="true">Yes</option></select></div>
+        <div class="form-group"><label>Profile Complete</label>
+          <select id="eu-complete"><option value="false">No</option><option value="true">Yes</option></select></div>
+      </div>
+      <div class="form-group"><label>Bio</label><textarea id="eu-bio" rows="3"></textarea></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" data-modal="edit-user-modal">Cancel</button>
+        <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Casting Modal -->
+<div class="modal-overlay" id="edit-casting-modal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Edit Casting Call</h3><button class="modal-close-btn" data-modal="edit-casting-modal"><i class="fas fa-times"></i></button></div>
+    <form id="edit-casting-form">
+      <input type="hidden" id="ec-id"/>
+      <div class="form-row-2">
+        <div class="form-group"><label>Title</label><input type="text" id="ec-title" required/></div>
+        <div class="form-group"><label>Company</label><input type="text" id="ec-company"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Location</label><input type="text" id="ec-location"/></div>
+        <div class="form-group"><label>Deadline</label><input type="date" id="ec-deadline"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Budget</label><input type="text" id="ec-budget"/></div>
+        <div class="form-group"><label>Status</label>
+          <select id="ec-status"><option value="true">Active</option><option value="false">Closed</option></select></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="ec-desc" rows="3"></textarea></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" data-modal="edit-casting-modal">Cancel</button>
+        <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Theater Modal (Admin) -->
+<div class="modal-overlay" id="admin-add-theater-modal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Add Theater / Studio</h3><button class="modal-close-btn" data-modal="admin-add-theater-modal"><i class="fas fa-times"></i></button></div>
+    <form id="admin-theater-form">
+      <div class="form-row-2">
+        <div class="form-group"><label>Name *</label><input type="text" id="at-name" required/></div>
+        <div class="form-group"><label>Type *</label>
+          <select id="at-type" required><option value="">Select</option><option>Cinema Hall</option><option>Multiplex</option><option>Studio</option><option>Auditorium</option><option>Open Air Theatre</option><option>Drive-in</option><option>Preview Theatre</option></select></div>
+      </div>
+      <div class="form-group"><label>Address *</label><input type="text" id="at-address" required/></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>City *</label><input type="text" id="at-city" required/></div>
+        <div class="form-group"><label>State</label><input type="text" id="at-state"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Phone</label><input type="tel" id="at-phone" autocomplete="off"/></div>
+        <div class="form-group"><label>Verified</label>
+          <select id="at-verified"><option value="true">Yes</option><option value="false">No</option></select></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" data-modal="admin-add-theater-modal">Cancel</button>
+        <button type="submit" class="btn-save"><i class="fas fa-map-marker-alt"></i> Add Theater</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Send Broadcast Notification Modal -->
+<div class="modal-overlay" id="broadcast-modal">
+  <div class="modal-box">
+    <div class="modal-header"><h3><i class="fas fa-broadcast-tower"></i> Send Broadcast Notification</h3><button class="modal-close-btn" data-modal="broadcast-modal"><i class="fas fa-times"></i></button></div>
+    <form id="broadcast-form">
+      <div class="form-row-2">
+        <div class="form-group"><label>Send To</label>
+          <select id="bc-target"><option value="all">All Users</option><option value="artist">Artists Only</option><option value="recruiter">Recruiters Only</option><option value="premium">Premium Members</option></select></div>
+        <div class="form-group"><label>Type</label>
+          <select id="bc-type"><option value="system">System</option><option value="casting">Casting</option><option value="membership">Membership</option></select></div>
+      </div>
+      <div class="form-group"><label>Title *</label><input type="text" id="bc-title" placeholder="Notification title" required/></div>
+      <div class="form-group"><label>Message *</label><textarea id="bc-message" rows="4" placeholder="Notification message..." required></textarea></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" data-modal="broadcast-modal">Cancel</button>
+        <button type="submit" class="btn-save"><i class="fas fa-paper-plane"></i> Send Broadcast</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="modal-overlay" id="confirm-delete-modal">
+  <div class="modal-box sm">
+    <div class="modal-header"><h3><i class="fas fa-exclamation-triangle" style="color:var(--error)"></i> Confirm Delete</h3><button class="modal-close-btn" data-modal="confirm-delete-modal"><i class="fas fa-times"></i></button></div>
+    <p id="confirm-delete-msg" style="color:var(--text2);margin-bottom:1.5rem;font-size:14px;"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel" data-modal="confirm-delete-modal">Cancel</button>
+      <button class="btn-delete" id="confirm-delete-action"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="admin-toast" id="admin-toast"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
